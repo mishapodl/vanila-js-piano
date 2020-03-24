@@ -12,6 +12,10 @@ const noteSchema = new mongoose.Schema({
 });
 
 const songSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
   notes: [noteSchema]
 });
 

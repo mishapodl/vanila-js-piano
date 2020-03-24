@@ -14,27 +14,18 @@
     </script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script src="/socket-io.js" defer></script>
     <script src="/main.js" defer></script>
     <script src="/piano.js" defer></script>
-    <script src="/chat.js" defer></script>
   </head>
   <body>
-    <button class="switch">Switch to piano</button>
-    
+    <div class="navigation">
+      <a class="home-link" href="/">Home</a> <span>/</span> 
+      <a class="home-link piano-link" href="/piano">Piano</a> <span>/</span>
+      <a class="home-link piano-link" href="/chat">Chat rooms</a>
+    </div>
+
     <div id="piano">
-      <div class="code">
-        <code><small>button is key</small><br>s_d g_h_j<br>z_x_c_v_b_n_m</code>
-      </div>
-      <div class="buttons">
-        <% if (locals.song == null) { %>
-          <button class="record-button btn">Record</button>
-          <button class="save-button btn">Save</button>
-        <% } else { %>
-          <a href="/" class="btn">Record New Song</a>
-        <% } %>
-        <button class="play-button btn <%= locals.song != null ? 'show' : '' %>">Play</button>
-      </div>
-      <a href="#" class="btn song-link">View song</a>
       <div class="piano">
         <div data-note="C" class="key white"></div>
         <div data-note="Db" class="key black"></div>
@@ -49,34 +40,37 @@
         <div data-note="Bb" class="key black"></div>
         <div data-note="B" class="key white"></div>
       </div>
-
-      <audio id="C" src="/notes/C.mp3"></audio>
-      <audio id="Db" src="/notes/Db.mp3"><audio>
-      <audio id="D" src="/notes/D.mp3"></audio>
-      <audio id="E" src="/notes/E.mp3"></audio>
-      <audio id="Eb" src="/notes/Eb.mp3"><audio>
-      <audio id="F" src="/notes/F.mp3"></audio>
-      <audio id="Gb" src="/notes/Gb.mp3"><audio>
-      <audio id="G" src="/notes/G.mp3"></audio>
-      <audio id="Ab" src="/notes/Ab.mp3"><audio>
-      <audio id="A" src="/notes/A.mp3"></audio>
-      <audio id="Bb" src="/notes/Bb.mp3"><audio>
-      <audio id="B" src="/notes/B.mp3"></audio>
-    </div>
-
-    <div id="chat">
-      <div id="messages-conteiner"></div>
-      
-      <div class="chat-navigation">
-        <form id="chat-form">
-          <input type="text" name="message" id="chat-message">
-          <button type="submit" id="send-button">Send</button>
-        </form>
-        <button id="chat-start">Start</button>
+      <div class="buttons">
+        <% if (locals.song == null) { %>
+          <button class="record-button btn">Record</button>
+          <div class="additional-btns">
+            <input type="text" class="input-name" id="song-name" placeholder="Name song">
+            <button class="save-button btn">Save</button>
+          <% } else { %>
+            <a href="/" class="btn">Record New Song</a>
+          <% } %>
+          <button class="play-button btn <%= locals.song != null ? 'show' : '' %>">Play</button>
+        </div>
+      </div>
+      <div id="songs">
+        <h2>Songs list</h2>
+        <ul class="songs-list">
+        </ul>
+      </div>
+      <div>
+        <audio id="C" src="/notes/C.mp3"></audio>
+        <audio id="Db" src="/notes/Db.mp3"><audio>
+        <audio id="D" src="/notes/D.mp3"></audio>
+        <audio id="E" src="/notes/E.mp3"></audio>
+        <audio id="Eb" src="/notes/Eb.mp3"><audio>
+        <audio id="F" src="/notes/F.mp3"></audio>
+        <audio id="Gb" src="/notes/Gb.mp3"><audio>
+        <audio id="G" src="/notes/G.mp3"></audio>
+        <audio id="Ab" src="/notes/Ab.mp3"><audio>
+        <audio id="A" src="/notes/A.mp3"></audio>
+        <audio id="Bb" src="/notes/Bb.mp3"><audio>
+        <audio id="B" src="/notes/B.mp3"></audio>
       </div>
     </div>
-    <script>
-
-    </script>
   </body>
 </html>

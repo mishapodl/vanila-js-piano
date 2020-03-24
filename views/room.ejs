@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+  <script src="/socket-io.js" defer></script>
+  <script src="/main.js" defer></script>
+  <script src="/chat.js" defer></script>
+  <title>Document</title>
+</head>
+<body>
+  <div class="navigation">
+    <a class="home-link" href="/">Home</a> <span>/</span> 
+    <a class="home-link piano-link" href="/piano">Piano</a> <span>/</span>
+    <a class="home-link piano-link" href="/chat">Chat rooms</a>
+  </div>
+  <div id="chat" >
+    <div id="messages-conteiner"></div>
+    
+    <div class="chat-navigation">
+      <form id="chat-form">
+        <input type="text" name="message" id="chat-message">
+        <button type="submit" id="send-button">Send</button>
+      </form>
+      <button id="chat-start">Start</button>
+    </div>
+  </div>
+</body>
+</html>

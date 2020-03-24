@@ -1,13 +1,18 @@
-const dqs = node => document.querySelector(node);
-const dqsa = node => document.querySelectorAll(node);
-
 const WHITE_KEYS = ['z', 'x', 'c', 'v', 'b', 'n', 'm'];
 const BLACK_KEYS = ['s', 'd', 'g', 'h', 'j'];
+let songs = [];
+
+socket.on('send-songs', data => {
+  songs = data;
+  showSongsList(songs);
+});
 
 const recoredBtn = dqs('.record-button'),
   playBtn = dqs('.play-button'),
   saveBtn = dqs('.save-button'),
   songLink = dqs('.song-link'),
+  nameSong = dqs('.input-name'),
+  songsList = dqs('.songs-list'),
   keys = dqsa('.key'),
   whiteKeys = dqsa('.key.white'),
   blackKeys = dqsa('.key.black');
@@ -62,11 +67,13 @@ function startRecording() {
   songNotes = [];
   playBtn.classList.remove('show');
   saveBtn.classList.remove('show');
+  nameSong.classList.remove('show');
 }
 
 function stopRecording() {
   playBtn.classList.add('show');
   saveBtn.classList.add('show');
+  nameSong.classList.add('show');
 }
 
 function playSong() {
@@ -100,8 +107,56 @@ function recordNote(note) {
 }
 
 function saveSong() {
-  axios.post('/songs', { songNotes: songNotes }).then(res => {
-    songLink.classList.add('show');
-    songLink.href = `/songs/${res.data._id}`;
+  axios
+    .post('/piano/songs', {
+      song: {
+        name: nameSong.value,
+        songNotes: songNotes
+      }
+    })
+    .then(res => {
+      nameSong.value = '';
+      songs.push(res.data);
+      showSongsList(songs);
+    });
+}
+
+function showSongsList(songs) {
+  if (!songs) return;
+  while (songsList.firstChild) {
+    songsList.removeChild(songsList.firstChild);
+  }
+
+  songs.forEach(song => {
+    let li = document.createElement('li');
+    li.innerHTML = `<a href="#" data-name="${song._id}">${song.name}<span class="remove-song" data-id="${song._id}">X</span></a>`;
+    songsList.append(li);
+    playChoosenSong(li);
+    deleteSong(li);
+  });
+}
+
+function searchSong(id) {
+  let song = songs.filter(song => {
+    if (song._id == id) return song;
+  });
+
+  songNotes = song[0].notes;
+  playSong();
+}
+
+function playChoosenSong(li) {
+  li.addEventListener('click', e => {
+    if (e.target.tagName != 'A') return;
+    searchSong(e.target.dataset.name);
+  });
+}
+
+function deleteSong(li) {
+  let deleteBtn = li.querySelector('span');
+  deleteBtn.addEventListener('click', async e => {
+    e.stopPropagation();
+    e.target.closest('li').remove();
+    await axios.delete(`/piano/${deleteBtn.dataset.id}`);
   });
 }
